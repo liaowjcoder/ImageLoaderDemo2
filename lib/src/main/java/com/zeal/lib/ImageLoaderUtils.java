@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -38,10 +39,14 @@ public class ImageLoaderUtils {
                     (mContext).denyCacheImageMultipleSizesInMemory()//拒绝多个尺寸的缓存
                     .threadPriority(Thread.NORM_PRIORITY - 2)//
                     .memoryCacheSize(2 * 1024 * 1024)//
-                    .tasksProcessingOrder(QueueProcessingType.LIFO)//
+                    .memoryCache(new LruMemoryCache(2 * 1024 * 1024))//
+                    .diskCacheSize(50 * 1024 *
+                            1024).tasksProcessingOrder(QueueProcessingType.LIFO)//
                     .writeDebugLogs()//日志开关
                     .diskCacheFileNameGenerator(new Md5FileNameGenerator())//
-                    .memoryCache(new WeakMemoryCache()).build();
+                    .memoryCache(new WeakMemoryCache())//
+                    .defaultDisplayImageOptions(DisplayImageOptions.createSimple())//
+                    .build();
 
             mCoreImageLoader.init(configuration);
         }
