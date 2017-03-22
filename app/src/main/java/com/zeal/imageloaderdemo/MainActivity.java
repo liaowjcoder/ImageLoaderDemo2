@@ -48,9 +48,11 @@ public class MainActivity extends BaseActivity {
         DisplayOptions displayOptions = new DisplayOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true).showImageOnLoading(R.mipmap.icon_job_post_straight)
                 .showImageOnFail(R.mipmap.icon_height_light).showImageForEmptyUri(R.mipmap
-                        .company_login_person).build();
-        ImageLoaderUtils.getInstance(this).displayImage("http://pic1.win4000" +
-                ".com/wallpaper/4/51f9cae59e5db.jpg", image, displayOptions, new
+                        .company_login_person)//
+                .setRadius(3)//
+                .build();
+        ImageLoaderUtils.getInstance(this).displayImage("http://p5.image.hiapk" +
+                ".com/uploads/allimg/141018/1621411c9-3.png", image, displayOptions, new
                 OnImageLoadListener() {
             @Override
             public void onImageLoadStart(String uri, ImageView imageView) {

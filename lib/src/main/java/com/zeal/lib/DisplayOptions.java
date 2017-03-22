@@ -17,12 +17,15 @@ public class DisplayOptions {
     private final boolean cacheInMemory;
     private final boolean cacheOnDisk;
 
+    private final int radius;
+
     private DisplayOptions(Builder builder) {
         imageResOnLoading = builder.imageResOnLoading;
         imageResForEmptyUri = builder.imageResForEmptyUri;
         imageResOnFail = builder.imageResOnFail;
         cacheInMemory = builder.cacheInMemory;
         cacheOnDisk = builder.cacheOnDisk;
+        radius = builder.radius;
     }
 
     public static class Builder {
@@ -32,6 +35,8 @@ public class DisplayOptions {
 
         private boolean cacheInMemory = false;
         private boolean cacheOnDisk = false;
+
+        private int radius = 0;
 
 
         public Builder showImageOnLoading(int imageRes) {
@@ -60,9 +65,16 @@ public class DisplayOptions {
             return this;
         }
 
+        public Builder setRadius(int radius) {
+            this.radius = radius;
+            return this;
+        }
+
         public DisplayOptions build() {
             return new DisplayOptions(this);
         }
+
+
     }
 
 
@@ -86,5 +98,7 @@ public class DisplayOptions {
         return cacheOnDisk;
     }
 
-
+    public int getRadius() {
+        return radius;
+    }
 }
