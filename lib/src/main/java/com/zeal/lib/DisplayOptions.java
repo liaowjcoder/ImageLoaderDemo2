@@ -17,7 +17,7 @@ public class DisplayOptions {
     private final boolean cacheInMemory;
     private final boolean cacheOnDisk;
 
-    private final int radius;
+    private BitmapDisplayer displayer;
 
     private DisplayOptions(Builder builder) {
         imageResOnLoading = builder.imageResOnLoading;
@@ -25,7 +25,11 @@ public class DisplayOptions {
         imageResOnFail = builder.imageResOnFail;
         cacheInMemory = builder.cacheInMemory;
         cacheOnDisk = builder.cacheOnDisk;
-        radius = builder.radius;
+        displayer = builder.displayer;
+    }
+
+    public void setDisplayer(BitmapDisplayer displayer) {
+        this.displayer = displayer;
     }
 
     public static class Builder {
@@ -36,7 +40,7 @@ public class DisplayOptions {
         private boolean cacheInMemory = false;
         private boolean cacheOnDisk = false;
 
-        private int radius = 0;
+        private BitmapDisplayer displayer = null;
 
 
         public Builder showImageOnLoading(int imageRes) {
@@ -65,8 +69,8 @@ public class DisplayOptions {
             return this;
         }
 
-        public Builder setRadius(int radius) {
-            this.radius = radius;
+        public Builder setDisplayer(BitmapDisplayer displayer) {
+            this.displayer = displayer;
             return this;
         }
 
@@ -98,7 +102,8 @@ public class DisplayOptions {
         return cacheOnDisk;
     }
 
-    public int getRadius() {
-        return radius;
+    public BitmapDisplayer getDisplayer() {
+        return displayer;
     }
+
 }

@@ -12,10 +12,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 
@@ -33,10 +30,14 @@ public class ImageLoaderUtils {
 
     private Context mContext;
 
+    private int mLoadingRes;
+    private int mEmptyRes;
+    private int mErrorRes;
+
     /**
      * 配置 ImageLoader
      */
-    public void init() {
+    public void init(int loadingRes, int emptyRes, int errorRes) {
         if (mCoreImageLoader != null) {
             ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder
                     (mContext).denyCacheImageMultipleSizesInMemory()//拒绝多个尺寸的缓存
@@ -52,6 +53,10 @@ public class ImageLoaderUtils {
                     .build();
 
             mCoreImageLoader.init(configuration);
+
+            mLoadingRes = loadingRes;
+            mEmptyRes = emptyRes;
+            mErrorRes = errorRes;
         }
     }
 
@@ -92,14 +97,13 @@ public class ImageLoaderUtils {
                     (mContext.getResources())).showImageOnFail(displayOptions.getImageOnFail
                     (mContext.getResources())).showImageOnLoading(displayOptions
                     .getImageOnLoading(mContext.getResources())).cacheInMemory(displayOptions
-                    .isCacheInMemory()).cacheOnDisk(displayOptions.isCacheOnDisk())//
-                    .imageScaleType(ImageScaleType.EXACTLY).displayer(displayOptions.getRadius()
-                    != 0//
-                    ? new RoundedBitmapDisplayer(displayOptions.getRadius()) : new
-                    SimpleBitmapDisplayer())//这里需要指定显示 ImageView 控件的大小，不然不会显示
-                    //.displayer(new FadeInBitmapDisplayer(7000))
-                    //.displayer(new RoundedBitmapDisplayer(20))
-                    .build();
+                    .isCacheInMemory()).cacheOnDisk(displayOptions.isCacheOnDisk());//
+            BitmapDisplayer displayer = displayOptions.getDisplayer();
+            if ((com.nostra13.universalimageloader.core.display.BitmapDisplayer) displayer
+                    .getBitmapDisplayer() != null) {
+                displayImageOptionsBuilder.displayer((com.nostra13.universalimageloader.core
+                        .display.BitmapDisplayer) displayer.getBitmapDisplayer());
+            }
         }
         mCoreImageLoader.displayImage(uri, imageView, displayImageOptionsBuilder.build(), new
                 ImageLoadingListener() {
@@ -144,4 +148,19 @@ public class ImageLoaderUtils {
             mCoreImageLoader.clearMemoryCache();
         }
     }
+
+    /**
+     * 创建一个默认的 DisplayOptions
+     */
+    public DisplayOptions createDefaultDisplayOptions() {
+        return new DisplayOptions.Builder()//
+                .cacheInMemory(true)//
+                .cacheOnDisk(true)//
+                .showImageOnLoading(mLoadingRes)//
+                .showImageOnFail(mErrorRes)//
+                .showImageForEmptyUri(mEmptyRes)//
+                .setDisplayer(new NormalDisplayer()).build();
+
+    }
+
 }

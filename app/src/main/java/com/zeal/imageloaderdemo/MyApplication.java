@@ -19,15 +19,17 @@ public class MyApplication extends Application {
     }
 
     public void initImageLoaderConfigration() {
-//        ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder
-//                (getApplicationContext()).denyCacheImageMultipleSizesInMemory()//拒绝多个尺寸的缓存
-//                .threadPriority(Thread.NORM_PRIORITY - 2).memoryCacheSize(2 * 1024 * 1024)
-//                .tasksProcessingOrder(QueueProcessingType.LIFO)
-//                .writeDebugLogs()
-//                .diskCacheFileNameGenerator(new Md5FileNameGenerator()).memoryCache(new
-//                        WeakMemoryCache()).build();
-//        ImageLoader.getInstance().init(configuration);
+        //        ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder
+        //                (getApplicationContext()).denyCacheImageMultipleSizesInMemory()//拒绝多个尺寸的缓存
+        //                .threadPriority(Thread.NORM_PRIORITY - 2).memoryCacheSize(2 * 1024 * 1024)
+        //                .tasksProcessingOrder(QueueProcessingType.LIFO)
+        //                .writeDebugLogs()
+        //                .diskCacheFileNameGenerator(new Md5FileNameGenerator()).memoryCache(new
+        // WeakMemoryCache()).build();
+        //        ImageLoader.getInstance().init(configuration);
 
-        ImageLoaderUtils.getInstance(getApplicationContext()).init();
+        //统一配置
+        ImageLoaderUtils.getInstance(getApplicationContext()).init(R.mipmap.company_login_person,
+                R.mipmap.icon_job_post_straight, R.mipmap.icon_height_light);
     }
 }
